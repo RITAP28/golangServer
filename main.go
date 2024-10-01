@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/RITAP28/golangServer/handler"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
@@ -18,6 +19,11 @@ func main() {
 		log.Fatal("PORT is not found in environment variables")
 	}
 
+	dbUrl := os.Getenv("DATABASE_URL");
+	if dbUrl == "" {
+		log.Fatal("Database URL is not found in environment variables")
+	}
+
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -29,8 +35,8 @@ func main() {
 	}));
 
 	v1Router := chi.NewRouter();
-	v1Router.Get("/ready", handlerReadiness);
-	v1Router.Get("/err", handlerErr);
+	v1Router.Get("/ready", handler.HandlerErr);
+	v1Router.Get("/err", handler.HandlerReadiness);
 
 	router.Mount("/v1", v1Router);
 

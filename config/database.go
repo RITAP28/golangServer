@@ -13,7 +13,7 @@ func ConnectToDB() (*db.PrismaClient, error){
 
 	log.Info().Msg("Connection to database is established!");
 	return client, nil;
-}
+};
 
 
 

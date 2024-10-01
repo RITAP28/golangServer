@@ -1,7 +1,7 @@
 // schema.prisma
 datasource db {
     provider = "postgresql"
-    url = env("DATABASE_URL")
+    url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -14,4 +14,15 @@ model User {
     email      String   @unique
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
+    Post       Post[]
+}
+
+model Post {
+    id          Int      @id @default(autoincrement())
+    title       String
+    content     String
+    authorEmail String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    user        User     @relation(references: [email], fields: [authorEmail], onDelete: Cascade)
 }
